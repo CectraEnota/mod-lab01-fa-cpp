@@ -1,85 +1,87 @@
 // Copyright 2022 UNN-IASR
+#include <cmath>
+#include <cctype>
 #include "fun.h"
 
-unsigned int faStr1(const char *str) {
+unsigned int faStr1(const char* str) {
     unsigned int cnt = 0;
-    bool inWord = false;
-    bool hasDigit = false;
+    bool in_word = false;
+    bool has_digit = false;
 
     for (; *str; ++str) {
         if (isspace(*str)) {
-            if (inWord && !hasDigit) {
+            if (in_word && !has_digit) {
                 ++cnt;
             }
-            inWord = false;
-            hasDigit = false;
-        }
-        else {
-            inWord = true;
+            in_word = false;
+            has_digit = false;
+        } else {
+            in_word = true;
             if (isdigit(*str)) {
-                hasDigit = true;
+                has_digit = true;
             }
         }
     }
 
-    if (inWord && !hasDigit) {
+    if (in_word && !has_digit) {
         ++cnt;
     }
 
     return cnt;
 }
 
-unsigned int faStr2(const char *str) {
+unsigned int faStr2(const char* str) {
     unsigned int cnt = 0;
-    bool inWord = false;
-    bool capitaLetter = false;
-    bool rightWord = true;
+    bool in_word = false;
+    bool capital_letter = false;
+    bool right_word = true;
 
     for (; *str; ++str) {
         if (isspace(*str)) {
-            if (inWord && capitaLetter && rightWord) {
+            if (in_word && capital_letter && right_word) {
                 ++cnt;
             }
-            inWord = false;
-            capitaLetter = false;
-            rightWord = true;
-        }
-        else {
-            if (!inWord) {
-                inWord = true;
-                capitaLetter = isupper(*str);
+            in_word = false;
+            capital_letter = false;
+            right_word = true;
+        } else {
+            if (!in_word) {
+                in_word = true;
+                capital_letter = isupper(*str);
             }
-            if (inWord && !islower(*str) && !isupper(*str)) {
-                rightWord = false;
+            if (in_word && !islower(*str) && !isupper(*str)) {
+                right_word = false;
             }
         }
     }
 
-    if (inWord && capitaLetter && rightWord) {
+    if (in_word && capital_letter && right_word) {
         ++cnt;
     }
     return cnt;
 }
 
-unsigned int faStr3(const char *str) {
-    unsigned int minLength = -1;
-    unsigned int curLenght = 0;
-    bool inWord = false;
+unsigned int faStr3(const char* str) {
+    unsigned int min_length = -1;
+    unsigned int cur_length = 0;
+    bool in_word = false;
+
     for (; *str; ++str) {
-        if (isspace(*str) && inWord) {
-            if (curLenght < minLength) {
-                minLength = curLenght;
+        if (isspace(*str) && in_word) {
+            if (cur_length < min_length) {
+                min_length = cur_length;
             }
-            curLenght = 0;
-            inWord = false;
-        }
-        else if (!isspace(*str)) {
-            inWord = true;
-            ++curLenght;
+            cur_length = 0;
+            in_word = false;
+        } else if (!isspace(*str)) {
+            in_word = true;
+            ++cur_length;
         }
     }
-    if (inWord && (curLenght < minLength)) {
-        minLength = curLenght;
+
+    if (in_word && (cur_length < min_length)) {
+        min_length = cur_length;
     }
-    return static_cast<unsigned int>(round(minLength));
+
+    return static_cast<unsigned int>(round(min_length));
 }
