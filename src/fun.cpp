@@ -62,26 +62,34 @@ unsigned int faStr2(const char* str) {
 }
 
 unsigned int faStr3(const char* str) {
-    unsigned int min_length = -1;
+    unsigned int total_length = 0;
+    unsigned int word_cnt = 0;
     unsigned int cur_length = 0;
     bool in_word = false;
 
     for (; *str; ++str) {
-        if (isspace(*str) && in_word) {
-            if (cur_length < min_length) {
-                min_length = cur_length;
+        if (isspace(*str)) {
+            if (in_word) {
+                total_length += cur_length;
+                word_cnt++;
+                cur_length = 0;
             }
-            cur_length = 0;
             in_word = false;
-        } else if (!isspace(*str)) {
+        } else {
             in_word = true;
-            ++cur_length;
+            cur_length++;
         }
     }
 
-    if (in_word && (cur_length < min_length)) {
-        min_length = cur_length;
+    if (in_word) {
+        total_length += cur_length;
+        word_cnt++;
     }
 
-    return static_cast<unsigned int>(round(min_length));
+    if (word_cnt == 0) {
+        return 0;
+    }
+
+    double average_length = static_cast<double>(total_length) / word_cnt;
+    return static_cast<unsigned int>(round(average_length));
 }
